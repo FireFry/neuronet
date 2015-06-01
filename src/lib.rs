@@ -1,22 +1,51 @@
 extern crate rand;
 
+use rand::{Rand, Rng};
+
+pub trait Mat<T> {
+    fn rows(&self) -> usize;
+    fn cols(&self) -> usize;
+    fn get(&self, r: usize, c: usize) -> &T;
+}
+
 pub struct Matrix<T: Clone> {
     data: Vec<T>,
     rows: usize,
     cols: usize,
 }
 
+impl <T: Clone> Mat<T> for Matrix<T> {
+    fn rows(&self) -> usize { self.rows }
+    fn cols(&self) -> usize { self.cols }
+    fn get(&self, r: usize, c: usize) -> &T {
+        &self.data[Matrix::to_index(r, c, self.rows(), self.cols())]
+    }
+}
+
 impl Matrix<()> {
     fn to_coords(index: usize, rows: usize, cols: usize) -> (usize, usize) {
         (index / cols, index % cols)
+    }
+
+    fn to_index(r: usize, c: usize, rows: usize, cols: usize) -> usize {
+        r * cols + c
     }
 }
 
 impl <T: Clone + std::fmt::Display> Matrix<T> {
     pub fn print_elements(&self) {
-        for x in self.data.iter() {
-            println!("{}", x);
+        for r in 0..self.rows {
+            for c in 0..self.cols {
+                print!("{}\t", self.get(r, c));
+            }
+            println!("");
         }
+    }
+}
+
+impl <T: Clone + Rand> Matrix<T> {
+    pub fn rand(rows: usize, cols: usize) -> Matrix<T> {
+        Matrix::create(|_, _| rand::thread_rng().gen(), rows, cols)
     }
 }
 
