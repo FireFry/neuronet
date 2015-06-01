@@ -19,37 +19,37 @@ fn main() {
     let learning_rate = 1f32;
     let iterations = 10000;
 
-    x.add_bias().print_elements();
+    x.add_bias().multiply(&w0).print_elements();
     
 //    for i in 0..iterations {
-//        let a1 = x.add_bias().multiply(w0).sigmoid();
-//        let a2 = a1.add_bias().multiply(w1).sigmoid();
+//        let a1 = x.add_bias().multiply(&w0).sigmoid();
+//        let a2 = a1.add_bias().multiply(&w1).sigmoid();
 //
-//        let d2 = y.minus(a2);
-//        let d1 = d2.multiply(w1.transpose())
+//        let d2 = y.minus(&a2);
+//        let d1 = d2.multiply(&w1.transpose())
 //            .remove_bias()
-//            .product(a1.apply_polynomial(0, 1, -1));
+//            .product(&a1.apply_polynomial(0, 1, -1));
 //
 //        let w1 = a1
 //            .add_bias()
 //            .transpose()
-//            .multiply(d2)
+//            .multiply(&d2)
 //            .apply_polynomial(lambda)
-//            .plus(w1);
+//            .plus(&w1);
 //
 //        let w0 = x
 //            .add_bias()
 //            .transpose()
-//            .multiply(d2)
+//            .multiply(&d2)
 //            .apply_polynomial(lambda)
-//            .plus(w0);
+//            .plus(&w0);
 //    }
 //
 //    x.add_bias()
-//        .multiply(w0)
+//        .multiply(&w0)
 //        .sigmoid()
 //        .add_bias()
-//        .multiply(w1)
+//        .multiply(&w1)
 //        .sigmoid()
 //        .print_elements();
 }

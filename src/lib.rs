@@ -68,5 +68,16 @@ impl Matrix {
             if c == 0 { 1f32 } else { *self.get(r, c - 1) }
         }, self.rows, self.cols + 1)
     }
+
+    pub fn multiply(&self, other: &Matrix) -> Matrix {
+        assert_eq!(self.cols(), other.rows());
+        Matrix::from_fn(|r, c| {
+            let mut sum = 0f32;
+            for i in 0..self.cols() {
+                sum += self.get(r, i) * other.get(i, c);
+            }
+            sum
+        }, self.rows(), other.cols())
+    }
 }
 
