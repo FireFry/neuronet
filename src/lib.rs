@@ -37,14 +37,8 @@ impl <T: Clone + std::fmt::Display> Matrix<T> {
     }
 }
 
-impl <T: Clone + Rand> Matrix<T> {
-    pub fn rand(rows: usize, cols: usize) -> Matrix<T> {
-        Matrix::create(|_, _| rand::thread_rng().gen(), rows, cols)
-    }
-}
-
 impl <T: Clone> Matrix<T> {
-    pub fn create<F> (mut element_fn: F,
+    pub fn from_fn<F> (mut element_fn: F,
                       rows: usize,
                       cols: usize) -> Matrix<T>
         where F: FnMut(usize, usize) -> T {
@@ -59,6 +53,19 @@ impl <T: Clone> Matrix<T> {
     }
     
     pub fn new(default_value: T, rows: usize, cols: usize) -> Matrix<T> {
-        Matrix::create(|_, _| default_value.clone(), rows, cols)
+        Matrix::from_fn(|_, _| default_value.clone(), rows, cols)
+    }
+
+    pub fn from_array(a: &[&[T]]) -> Matrix<T> {
+        assert!(a.len() > 0);
+        let rows = a.len();
+        let cols = a[0].len();
+        Matrix::from_fn(|r, c| a[r][c].clone(), rows, cols)
+    }
+}
+
+impl <T: Clone + Rand> Matrix<T> {
+    pub fn rand(rows: usize, cols: usize) -> Matrix<T> {
+        Matrix::from_fn(|_, _| rand::thread_rng().gen(), rows, cols)
     }
 }
