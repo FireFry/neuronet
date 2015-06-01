@@ -1,0 +1,4 @@
+[package]
+name = "neuronet"
+version = "0.1.0"
+authors = ["FireFry <v.a.burakov@gmail.com>"]
