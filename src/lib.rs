@@ -37,7 +37,8 @@ impl Matrix {
     pub fn from_fn<F> (mut element_fn: F,
                       rows: usize,
                       cols: usize) -> Matrix
-        where F: FnMut(usize, usize) -> f32 {
+        where F: FnMut(usize, usize) -> f32
+    {
             
         let len = rows * cols;
         let mut data = Vec::with_capacity(len);
@@ -78,6 +79,65 @@ impl Matrix {
             }
             sum
         }, self.rows(), other.cols())
+    }
+
+    pub fn map<F>(&self, mut f: F) -> Matrix
+        where F: FnMut(f32) -> f32
+    {
+            
+        Matrix::from_fn(move |r, c| f(*self.get(r, c)),
+                        self.rows(),
+                        self.cols())
+    }
+    
+    pub fn sigmoid(&self) -> Matrix {
+        self.map(|x| 1f32 / (1f32 + f32::exp(-x)))
+    }
+
+    pub fn minus(&self, other: &Matrix) -> Matrix {
+        assert_eq!(self.rows(), other.rows());
+        assert_eq!(self.cols(), other.cols());
+        Matrix::from_fn(|r, c| self.get(r, c) - other.get(r, c),
+                        self.rows(),
+                        self.cols())
+    }
+
+    pub fn transpose(&self) -> Matrix {
+        Matrix::from_fn(|r, c| *self.get(c, r), self.cols(), self.rows())
+    }
+
+    pub fn remove_bias(&self) -> Matrix {
+        Matrix::from_fn(|r, c| *self.get(r, c + 1),
+                        self.rows(),
+                        self.cols() - 1)
+    }
+
+    pub fn product(&self, other: &Matrix) -> Matrix {
+        assert_eq!(self.rows(), other.rows());
+        assert_eq!(self.cols(), other.cols());
+        Matrix::from_fn(|r, c| self.get(r, c) * other.get(r, c),
+                        self.rows(),
+                        self.cols())
+    }
+
+    pub fn apply_polynomial(&self, a: &[f32]) -> Matrix {
+        self.map(|x| {
+            let mut sum = 0f32;
+            let mut exp = 1f32;
+            for coef in a {
+                sum += coef * exp;
+                exp *= x;
+            }
+            sum
+        })
+    }
+
+    pub fn plus(&self, other: &Matrix) -> Matrix {
+        assert_eq!(self.rows(), other.rows());
+        assert_eq!(self.cols(), other.cols());
+        Matrix::from_fn(|r, c| self.get(r, c) + other.get(r, c),
+                        self.rows(),
+                        self.cols())
     }
 }
 
