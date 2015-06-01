@@ -2,19 +2,13 @@ extern crate rand;
 
 use rand::{Rand, Rng};
 
-pub trait Mat<T> {
-    fn rows(&self) -> usize;
-    fn cols(&self) -> usize;
-    fn get(&self, r: usize, c: usize) -> &T;
-}
-
 pub struct Matrix<T: Clone> {
     data: Vec<T>,
     rows: usize,
     cols: usize,
 }
 
-impl <T: Clone> Mat<T> for Matrix<T> {
+impl <T: Clone> Matrix<T> {
     fn rows(&self) -> usize { self.rows }
     fn cols(&self) -> usize { self.cols }
     fn get(&self, r: usize, c: usize) -> &T {
