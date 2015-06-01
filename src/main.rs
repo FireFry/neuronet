@@ -13,8 +13,8 @@ fn main() {
                                  &[1f32],
                                  &[0f32]]);
 
-    let w0 = Matrix::<f32>::rand(3, 2);
-    let w1 = Matrix::<f32>::rand(3, 1);
+    let w0 = Matrix::rand(3, 2);
+    let w1 = Matrix::rand(3, 1);
 
     let learning_rate = 1f32;
     let iterations = 10000;
