@@ -69,3 +69,12 @@ impl <T: Clone + Rand> Matrix<T> {
         Matrix::from_fn(|_, _| rand::thread_rng().gen(), rows, cols)
     }
 }
+
+impl Matrix<f32> {
+    pub fn add_bias(&self) -> Matrix<f32> {
+        Matrix::from_fn(|r, c| {
+            if c == 0 { 1f32 } else { *self.get(r, c - 1) }
+        }, self.rows, self.cols + 1)
+    }    
+}
+
