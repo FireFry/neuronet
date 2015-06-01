@@ -1,6 +1,10 @@
 extern crate neuronet;
+extern crate rand;
+
+use rand::Rng;
 
 fn main() {
-    let a = neuronet::Matrix::create(|r, c| 10 * r + c, 3, 2);
+    let mut rng = rand::thread_rng();
+    let a = neuronet::Matrix::create(move |_, _| rng.gen::<f32>(), 3, 2);
     a.print_elements();
 }
